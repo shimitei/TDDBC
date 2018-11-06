@@ -1,6 +1,6 @@
 package tokyo201401;
 
-import java.util.List;
+import java.util.function.Predicate;
 
 /**
  * ブラックジャック
@@ -8,9 +8,12 @@ import java.util.List;
  */
 public class Score {
 
-	public static int sum(List<String> list) {
-		int score = list.stream().filter(s -> !s.equals("A")).mapToInt(s -> value(s)).sum();
-		final int countA = (int) list.stream().filter(s -> s.equals("A")).count();
+	private static Predicate<Card> isNotAce = (c) -> { return !c.getLabel().equals(Deck.ACE); };
+	private static Predicate<Card> isAce = (c) -> { return c.getLabel().equals(Deck.ACE); };
+
+	public static int sum(Hand hand) {
+		int score = hand.getCards().stream().filter(isNotAce).mapToInt(c -> value(c)).sum();
+		final int countA = (int) hand.getCards().stream().filter(isAce).count();
 		if (countA > 0) {
 			final int scoreA = score + countA + 10;
 			if (scoreA <= 21) {
@@ -22,14 +25,19 @@ public class Score {
 		return score;
 	}
 
-	private static int value(String s) {
+	private static int value(Card c) {
 		int result;
-		switch (s) {
-		case "J": result = 10; break;
-		case "Q": result = 10; break;
-		case "K": result = 10; break;
-		default: result = Integer.valueOf(s); break;
+		final String label = c.getLabel();
+		switch (label) {
+		case Deck.JACK: result = 10; break;
+		case Deck.QUEEN: result = 10; break;
+		case Deck.KING: result = 10; break;
+		default: result = Integer.valueOf(label); break;
 		}
 		return result;
+	}
+
+	public static boolean isBust(int score) {
+		return (score > 21);
 	}
 }
