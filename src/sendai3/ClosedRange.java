@@ -1,5 +1,7 @@
 package sendai3;
 
+import java.util.List;
+
 /**
  * TDDBC仙台03課題：整数の区間
  * @see http://devtesting.jp/tddbc/?TDDBC%E4%BB%99%E5%8F%B003%2F%E8%AA%B2%E9%A1%8C
@@ -65,5 +67,29 @@ public class ClosedRange {
 
 	public boolean isConnectedTo(OpenRange openRange) {
 		return OpenClosedRangeUtils.isConnected(openRange, this);
+	}
+
+	public boolean containsAll(List<Integer> list) {
+		return list.stream().allMatch(i -> this.contains(i));
+	}
+
+	public ClosedRange getIntersection(ClosedRange closedRange) {
+		if (!isConnectedTo(closedRange)) {
+			return null;
+		}
+		return new ClosedRange(Math.max(this.getLowerEndpoint(), closedRange.getLowerEndpoint()),
+				Math.min(this.getUpperEndpoint(), closedRange.getUpperEndpoint()));
+	}
+
+	public static ClosedRange parse(String str) {
+		if (!str.startsWith("[") || !str.endsWith("]")) {
+			throw new IllegalArgumentException();
+		}
+		final String s = str.substring(1, str.length() -1);
+		String[] ar = s.split(",");
+		if (ar.length != 2) {
+			throw new IllegalArgumentException();
+		}
+		return new ClosedRange(Integer.valueOf(ar[0]), Integer.valueOf(ar[1]));
 	}
 }

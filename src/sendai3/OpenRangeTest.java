@@ -2,6 +2,8 @@ package sendai3;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.Arrays;
+
 import org.junit.jupiter.api.Test;
 
 public class OpenRangeTest {
@@ -61,5 +63,28 @@ public class OpenRangeTest {
 		assertTrue(o.isConnectedTo(new ClosedRange(1, 6)));
 		assertTrue(o.isConnectedTo(new ClosedRange(8, 15)));
 		assertFalse(o.isConnectedTo(new ClosedRange(3, 8)));
+	}
+
+	@Test
+	void 指定した全ての整数を含むか判定しよう() {
+		final OpenRange o = new OpenRange(3, 8);
+		assertTrue(o.containsAll(Arrays.asList(9,-1)));
+		assertFalse(o.containsAll(Arrays.asList(4,7,3)));
+	}
+
+	@Test
+	void 開区間と別の開区間との共通集合を取得しよう() {
+		final OpenRange o1 = new OpenRange(3, 8);
+
+		final OpenRange o2 = o1.getIntersection(new OpenRange(4, 10));
+		assertEquals(3, o2.getLowerEndpoint());
+		assertEquals(10, o2.getUpperEndpoint());
+	}
+
+	@Test
+	void 文字列表記を解析して区間を生成しよう() {
+		final OpenRange o = OpenRange.parse("(3,8)");
+		assertEquals(3, o.getLowerEndpoint());
+		assertEquals(8, o.getUpperEndpoint());
 	}
 }
