@@ -47,4 +47,19 @@ public class OpenRangeTest {
 		assertTrue(o.isConnectedTo(new OpenRange(8, 15)));
 		assertTrue(o.isConnectedTo(new OpenRange(3, 8)));
 	}
+
+	@Test
+	void 閉区間と開区間と等しいか判定しよう() {
+		final ClosedRange c3to8 = new ClosedRange(3, 8);
+		final OpenRange o = new OpenRange(3, 8);
+		assertNotEquals(c3to8, o);
+	}
+
+	@Test
+	void 閉区間が開区間と接続しているか判定しよう() {
+		final OpenRange o = new OpenRange(3, 8);
+		assertTrue(o.isConnectedTo(new ClosedRange(1, 6)));
+		assertTrue(o.isConnectedTo(new ClosedRange(8, 15)));
+		assertFalse(o.isConnectedTo(new ClosedRange(3, 8)));
+	}
 }

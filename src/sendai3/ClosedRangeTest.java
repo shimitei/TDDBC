@@ -45,4 +45,12 @@ public class ClosedRangeTest {
 		assertTrue(c3to8.isConnectedTo(new ClosedRange(8, 15)));
 		assertFalse(c3to8.isConnectedTo(new ClosedRange(9, 12)));
 	}
+
+	@Test
+	void 閉区間が開区間と接続しているか判定しよう() {
+		final ClosedRange c3to8 = new ClosedRange(3, 8);
+		assertTrue(c3to8.isConnectedTo(new OpenRange(1, 6)));
+		assertTrue(c3to8.isConnectedTo(new OpenRange(8, 15)));
+		assertFalse(c3to8.isConnectedTo(new OpenRange(3, 8)));
+	}
 }

@@ -62,4 +62,8 @@ public class ClosedRange {
 	public boolean isConnectedTo(ClosedRange closedRange) {
 		return contains(closedRange.getLowerEndpoint()) || contains(closedRange.getUpperEndpoint());
 	}
+
+	public boolean isConnectedTo(OpenRange openRange) {
+		return OpenClosedRangeUtils.isConnected(openRange, this);
+	}
 }

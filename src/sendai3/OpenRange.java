@@ -62,4 +62,8 @@ public class OpenRange {
 	public boolean isConnectedTo(OpenRange closedRange) {
 		return true;
 	}
+
+	public boolean isConnectedTo(ClosedRange closedRange) {
+		return OpenClosedRangeUtils.isConnected(this, closedRange);
+	}
 }
